@@ -1,0 +1,67 @@
+class Solution {
+    public boolean helper(int[]arr, int mid, int k){
+        int n = arr.length;
+        int countK = 1;
+        int sum = 0;
+        for(int i=0;i<n;i++){
+            if(arr[i]>mid) return false;
+            sum+=arr[i];
+            if(sum>mid){
+                countK +=1;
+                sum=arr[i];
+            }
+        }
+        if(countK <= k) return true;
+        return false;
+    }
+    public int minTime(int[] arr, int k) {
+        //Binary on search space
+        int n = arr.length;
+        int minPossibleAns = 0;
+        int maxPossibleAns = 0;
+        boolean canPossible = false;
+        for(int i=0;i<n;i++){
+            minPossibleAns = Math.max(minPossibleAns,arr[i]);
+            maxPossibleAns+=arr[i];
+        }
+        int mid=0;
+        int ans=0;
+        // int[] prefixSum = new int[n];
+        // prefixSum[0] = arr[0];
+        // for(int i=1;i<n;i++){
+        //     prefixSum[i] = prefixSum[i-1]+arr[i];
+        // }
+        while(minPossibleAns<=maxPossibleAns){
+            mid = minPossibleAns + (maxPossibleAns-minPossibleAns)/2;
+            
+            canPossible = helper(arr, mid, k);
+            if(canPossible==true){
+                ans=mid;
+                maxPossibleAns = mid-1;
+            }else{
+                minPossibleAns = mid+1;
+            }
+        }
+        return ans;
+    }
+    // public int findFloor(int[]prefix, int x){
+    //     int n = prefix.length;
+    //     i=0;
+    //     j=n-1;
+    //     int mid=0;
+    //     int ans = -1;
+    //     while(i<=j){
+    //         mid = i+(j-i)/2;
+    //         if(prefix[mid]==x]) return mid;
+    //         else if(prefix[mid]>x) j=mid-1;
+    //         else {
+    //             ans = mid;
+    //             i=mid+1;
+    //         }
+    //     }
+    //     return ans;
+    // }
+}
+/*
+ [5, 10, 30, 20, 15] -  [5, 15, 45, 65, 80] -> 30 -> 80 mid-> 110/2 -> 55 k=3
+*/
