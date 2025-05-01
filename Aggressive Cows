@@ -1,0 +1,41 @@
+class Solution {
+    public static boolean helper(int[] arr, int mid, int cows) {
+        //we are finding the ceil of lastCow + mid
+        int countCows = 1;
+        int lastPos = arr[0];
+        
+        for (int i = 1; i < arr.length; i++) {
+            //ceil condition
+            if (arr[i] - lastPos >= mid) {
+                //checking if the distance between current and last placed cow is ≥ mid.
+                countCows++;
+                lastPos = arr[i];
+            }
+            if (countCows == cows) return true;
+        }
+        return false;
+    }
+
+    public static int aggressiveCows(int[] stalls, int k) {
+        //Binary search on answer space
+        
+        Arrays.sort(stalls);
+        int n = stalls.length;
+        int minPossibleAns=1;
+        int maxPossibleAns= stalls[n-1]-stalls[0];
+        int mid=0;
+        boolean canPossible=false;
+        int ans =0;
+        while(minPossibleAns<=maxPossibleAns){
+            mid = minPossibleAns+(maxPossibleAns-minPossibleAns)/2;
+            canPossible = helper(stalls,mid,k);
+            if(canPossible==true){
+                ans=mid;
+                minPossibleAns = mid+1;
+            }else{
+                maxPossibleAns = mid-1;
+            }
+        }
+        return ans;
+    }
+}
