@@ -7,7 +7,7 @@ class Solution {
         for (int i = 1; i < arr.length; i++) {
             //ceil condition
             if (arr[i] - lastPos >= mid) {
-                //checking if the distance between current and last placed cow is ≥ mid.
+                //checking if the distance between current and last placed cow is ≥ mid. In order to maximise the minimum closest distance between 2 cows. means how far we can arrange them all within k stalls
                 countCows++;
                 lastPos = arr[i];
             }
