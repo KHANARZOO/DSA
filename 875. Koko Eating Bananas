@@ -1,0 +1,40 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int n = piles.length;
+        int minSpeed = 1; //means koko can eat 1 banana per hour 
+        int maxSpeed = 0; //means if koko can eat max pile in an hour so she can ate rest in 1 hour as well, and in all she requires n hours to finish
+
+        for(int i=0;i<n;i++){
+            maxSpeed = Math.max(maxSpeed, piles[i]);
+        }
+        int mid =0;
+        int ans=0;
+        boolean canPossible = false;
+        while(minSpeed<=maxSpeed){
+            mid = minSpeed + (maxSpeed-minSpeed)/2;
+
+            canPossible = helper(piles, mid, h);
+
+            if(canPossible==true){
+                //koko can eat all bananas at mid hour. will store this hour and look on left side for lower hour
+                ans = mid;
+                maxSpeed = mid-1;
+            }else{
+                //means it is not possible to finish all bananas at a speed of mid hours, so we need to increase hours
+                minSpeed = mid+1;
+            }
+        }
+        return ans;
+    }
+
+    public boolean helper(int[]arr, int mid, int hours){
+        int countHours = 0;
+        int n = arr.length;
+        for(int i=0;i<n;i++){
+            countHours += (int)Math.ceil((double)arr[i]/mid);
+
+            if(countHours>hours) return false;
+        }
+        return true;
+    }
+}
