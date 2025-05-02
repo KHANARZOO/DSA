@@ -1,0 +1,45 @@
+class Solution {
+    public static boolean helper(int[]arr, int mid, int k){
+        int countk=1;
+        int n = arr.length;
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum+=arr[i];
+            if(sum>mid){
+                countk+=1;
+                sum = arr[i];
+            }
+        }
+        if(countk > k) return false;
+        return true;
+    }
+    public static int findPages(int[] arr, int k) {
+        int n = arr.length;
+        if(k>n) return -1; //If books are students are greater than n
+        int minPages = 0;// If there are n books and n students then each student will get one book and max of all of them will be minimum pages one student received
+        int maxPages = 0;// If there is 1 student so sum(all) will be the maxPages one student received
+        for(int i=0;i<n;i++){
+            minPages = Math.max(minPages, arr[i]);
+            maxPages += arr[i];
+        }
+        
+        int mid = 0;
+        int ans = -1;
+        boolean canPossible;
+        
+        while(minPages<=maxPages)
+        {
+            mid = minPages+(maxPages-minPages)/2;
+            
+            canPossible = helper(arr,mid,k);
+            
+            if(canPossible==true){
+                ans=mid;
+                maxPages=mid-1;
+            }else{
+                minPages=mid+1;
+            }
+        }
+        return ans;
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+}
