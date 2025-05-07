@@ -1,0 +1,71 @@
+class Solution {
+    public String minWindow(String s, String t) {
+        //Using 2 hashmap + 2 pointer approach
+        HashMap<Character, Integer> map = new HashMap<>();
+        int match = 0;
+        HashMap<Character, Integer> temp = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            if (map.containsKey(t.charAt(i))) {
+                map.put(t.charAt(i), map.get(t.charAt(i)) + 1);
+            } else {
+                map.put(t.charAt(i), 1);
+            }
+        }
+        int i = 0;
+        int j = 0;
+        int min = Integer.MAX_VALUE;
+        int start = 0;
+        while(!map.containsKey(s.charAt(i))){
+            i+=1;
+            j+=1;
+        }
+        //Traverse through s string
+        while (j < s.length()) {
+            if (map.containsKey(s.charAt(j))) {
+                //will insert jth char ino our temp
+                if (temp.containsKey(s.charAt(j))) {
+                    temp.put(s.charAt(j), temp.get(s.charAt(j)) + 1);
+                    //check the frequency of temp char with the map char
+
+                } else {
+                    temp.put(s.charAt(j), 1);
+                }
+                //Only if freq of current char matches with desired freq increament the count
+                if (temp.get(s.charAt(j)) == map.get(s.charAt(j))) {
+                    match += 1;
+
+                    while (match == map.size()) {
+                        //compare with map size to cal the newLen
+                        int newLen = j - i + 1;
+                        if (newLen < min) {
+                            min = newLen;
+                            start = i;
+                        }
+                        if (map.containsKey(s.charAt(i))) {
+                            temp.put(s.charAt(i), temp.get(s.charAt(i)) - 1);
+                            if (temp.get(s.charAt(i)) < map.get(s.charAt(i)))
+                                match -= 1;
+                        }
+                        i += 1;
+                    }   
+                }
+            }
+            j += 1;
+        }
+        if (min == Integer.MAX_VALUE)
+            return "";
+        return s.substring(start, start + min);
+    }
+}
+/*
+Dry run:-
+"ADOBECODEBANC", t = "ABC"
+i=0 j=0
+-> create freq map for t = "ABC" -> A->1 B->1 C->1
+-> match = 0 
+-> create temp hashmap-> in which will store only desired element with its frequency
+-> point to remember -> start i and j pointer from the desired chars
+-> when we found match -> calculate its freq and decreament match count
+-> and increament j++ and i++(until found desired char)
+-> i is at desired freq remove its freq from temp map
+*/
