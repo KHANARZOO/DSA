@@ -1,0 +1,37 @@
+class Solution {
+    public int operation(int num1, int num2, String opr){
+        // System.out.println(num1 + " "+ num2+ " "+ opr);
+        if(opr.equals("+")){
+            return num1+num2;
+        }else if(opr.equals("-")){
+            return num1-num2;
+        }else if(opr.equals("*")){
+            return num1*num2;
+        }else{
+            return num1 / num2;
+        }
+    }
+    public boolean isDigit(String s){
+        if(Integer.parseInt(s)>=0 && Integer.parseInt(s)<=9) return true;
+        return false;
+    }
+    public int evalRPN(String[] tokens) {
+        Stack<String> st = new Stack<>();
+        int ans = 0;
+        int n = tokens.length;
+
+        for(int i=0;i<n;i++){
+            if(tokens[i].equals("+") || tokens[i].equals("*") || tokens[i].equals("-")|| tokens[i].equals("/")){
+                //s1 is num1 and s2 is nums2
+                String s1  = st.pop();
+                String s2 = st.pop();
+                String opr = tokens[i];
+                int num2 = Integer.parseInt(s1);
+                int num1 = Integer.parseInt(s2);
+                int res = operation(num1,num2,opr);
+                st.push(""+res);
+            }else st.push(tokens[i]);
+        }
+        return Integer.parseInt(st.peek());
+    }
+}
