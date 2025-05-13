@@ -1,0 +1,34 @@
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int[] doubleArr = new int[2*n];
+        int m = doubleArr.length;
+        for(int i=0;i<n;i++){
+            doubleArr[i] = nums[i];
+            doubleArr[i+n] = nums[i];
+        }
+        Stack<Integer> st = new Stack<>();
+        int[] ngRight = new int[m];
+        ngRight[m-1] = -1;
+        st.push(doubleArr[m-1]);
+
+        for(int i=m-2;i>=0;i--){
+            while(!st.isEmpty() && st.peek()<=doubleArr[i]){
+                st.pop();
+                if(st.isEmpty()){
+                    ngRight[i] = -1;
+                }
+            }
+            if(!st.isEmpty()) ngRight[i] = st.peek();
+            st.push(doubleArr[i]);
+        }
+        int[] ans = new int[n];
+        for(int i=0;i<n;i++){
+            ans[i] = ngRight[i];
+        }
+        return ans;
+    }
+}
+/*
+[1,2,1] -> [1,2,1,1,2,1] 
+*/
