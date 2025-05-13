@@ -1,0 +1,71 @@
+class Solution {
+    class Pair {
+        int value;
+        int index;
+
+        Pair(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
+    }
+
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        //Using Dequeue
+
+        Deque<Pair> deq = new ArrayDeque<>();
+        int n = nums.length;
+        if (n == 0 || k == 0) {
+            return new int[0];
+        }
+        // if(n==1 &&  k==1){
+        //     int[] b = new int[1];
+        //     b[0] = nums[0];
+        //     return b;
+        // }
+        int[] ans = new int[n - k + 1];
+        int a = 0;
+        deq.offerFirst(new Pair(nums[0], 0));
+        //First traverse the 1st window
+        for (int i = 0; i < k; i++) {
+
+            while (!deq.isEmpty() && deq.peekLast().value <= nums[i]) {
+                deq.pollLast();
+            }
+            //insert the current
+            deq.offerLast(new Pair(nums[i], i));
+
+            //leftmost element will be the largest ele from 1st window
+            if (i >= k - 1) {
+                ans[a++] = deq.peekFirst().value;
+            }
+        }
+        //Now from 2nd window onwards
+        for (int i = k; i < n; i++) {
+            int index = deq.peekFirst().index;
+            //check expiry of element
+            if (index < (i - k + 1)) {
+                deq.pollFirst();
+            }
+            while (!deq.isEmpty() && deq.peekLast().value <= nums[i]) {
+                 deq.pollLast();
+            }
+            //insert the current
+            deq.offerLast(new Pair(nums[i], i));
+
+            //leftmost element will be the largest ele from 1st window
+            if (i >= k - 1) {
+                ans[a++] = deq.peekFirst().value;
+            }
+        }
+        return ans;
+    }
+}
+
+
+peekFirst()	This method is used to retrieve the element at the head of the deque but doesn’t remove the element from the deque. This method returns null if the deque is empty.
+peekLast()	This method is used to retrieve the element at the tail of the deque but doesn’t remove the element from the deque. This method returns null if the deque is empty.
+pollFirst()	This method is used to retrieve and remove the element at the head of the deque. This method returns null if the deque is empty.
+pollLast()	This method is used to retrieve and remove the element at the tail of the deque. This method returns null if the deque is empty.
+offer(element)	This method is used to add an element at the tail of the queue. This method is preferable to add() method since this method does not throws an exception when the capacity of the container is full since it returns false.
+offerFirst(element)	This method is used to add an element at the head of the queue. This method is preferable to addFirst() method since this method does not throws an exception when the capacity of the container is full since it returns false.
+offerLast(element)	This method is used to add an element at the tail of the queue. This method is preferable to add() method since this method does not throws an exception when the capacity of the container is full since it returns false.
