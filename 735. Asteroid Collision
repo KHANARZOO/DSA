@@ -1,0 +1,94 @@
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        //Brute Force
+        // List<Integer> curr = new ArrayList<>();
+        // int n = asteroids.length;
+        // if(n <= 1)return asteroids;
+        // for(int i = 0; i < n; i++){
+        //     curr.add(asteroids[i]);
+        // }
+        // for(int i = 0; i < n; i++){
+        //     List<Integer> temp = new ArrayList<>();
+        //     if(curr.size() == 0)break;
+        //     temp.add(curr.get(0));
+        //     // boolean isBlast = false;
+        //     for(int j = 1; j < curr.size(); j++){
+        //         if( temp.size() > 0 && temp.get(temp.size() - 1) > 0 && curr.get(j) < 0){
+        //             //collision-> first->+ve & second->-ve
+        //             int val1 = Math.abs(temp.get(temp.size() - 1));
+        //             int val2 = Math.abs(curr.get(j));
+        //             if(val1 < val2){
+        //                 //means last ele of temp is smaller than current element of curr array
+        //                 //BLAST
+        //                 temp.remove(temp.size() - 1);
+        //                 temp.add(curr.get(j));
+        //             }else if(val1 > val2){
+        //                 // do nothing
+        //             }else{
+        //                 //if both asteroids size are equal-> +8 -8 -> erase that from temp
+        //                 temp.remove(temp.size() - 1);
+        //             }
+        //             // isBlast = true;
+        //         }else 
+        //             //No collision happen -> directly insert them
+        //             temp.add(curr.get(j));
+        //     }
+        //     curr = temp;
+        //     // if(isBlast){
+        //     //     temp = new ArrayList<>();
+        //     // }else{
+        //     //     int res[] = new int[curr.size()];
+        //     //     for(int j = 0; j < curr.size(); j++)res[j] = curr.get(j);
+        //     //     return res;
+        //     // }
+        // }
+        // int res[] = new int[curr.size()];
+        // for(int j = 0; j < curr.size(); j++)res[j] = curr.get(j);
+        // return res;
+
+
+        //Using stack
+        int n = asteroids.length;
+        List<Integer> curr = new ArrayList<>();
+        Stack<Integer> st = new Stack<>();
+        for(int i = 0; i < n; i++){
+            curr.add(asteroids[i]);
+        }
+        st.push(curr.get(0));
+        boolean checkEqualColllision = false;
+        ArrayList<Integer> li = new ArrayList<>();
+        for(int i=1;i<n;i++){
+            checkEqualColllision = false;
+            //Collision condition -> first->+ve and second->-ve
+            while(!st.isEmpty() && st.peek()>0 && curr.get(i)<0){
+                int val1 = Math.abs(st.peek());
+                int val2 = Math.abs(curr.get(i));
+
+                if(val1<val2){
+                    st.pop();
+                }else if(val1==val2){
+                    //In this condition both peek and current element will destroy each other
+                    //so no need to push the current element
+                    st.pop();
+                    checkEqualColllision = true;
+                    break;
+                }else{
+                    //In this condition -> current element will not push into stack
+                    //as already greater element is at peek
+                    checkEqualColllision = true;
+                    break;
+                }
+            }
+            if(!checkEqualColllision) st.push(curr.get(i));
+        }
+        while(!st.isEmpty()){
+            li.add(st.pop());
+        }
+        Collections.reverse(li);
+        int[] res = new int[li.size()];
+        for(int i=0;i<res.length;i++){
+            res[i] = li.get(i);
+        }
+        return res;
+    }
+}
