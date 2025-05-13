@@ -1,0 +1,35 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> list = new ArrayList<>();
+        Queue<String> queue = new LinkedList<>();
+        queue.add("");
+
+        for (int i = 0; i < 2 * n; i++) {
+            int size = queue.size();
+            for (int j = 0; j < size; j++) {
+                String rem = queue.poll();
+                int open = 0;
+                int close = 0;
+                for (int l = 0; l < rem.length(); l++) {
+                    if (rem.charAt(l) == '(')
+                        open += 1;
+                    else
+                        close += 1;
+                }
+                if (open < n) {
+                    queue.add(new String(rem+"("));
+                }
+                if (open > close) {
+                    queue.add(new String(rem+")"));
+                }
+            }
+        }
+        while (!queue.isEmpty()) {
+            list.add(queue.poll());
+        }
+        return list;
+    }
+}
+/*
+((( -> ()()() -> () () () -> 
+*/
