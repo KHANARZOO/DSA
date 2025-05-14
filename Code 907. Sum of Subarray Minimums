@@ -1,0 +1,80 @@
+class Solution {
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+        //Storing the index not value
+        int nsLeft[] = new int[n];
+        int nsRight[] = new int[n];
+        Stack<Integer> st = new Stack<>();
+        nsLeft[0] = -1;
+        st.push(0);
+
+        for (int i = 1; i < n; i++) {
+            while (!st.isEmpty() && arr[st.peek()] >= arr[i]) {
+                st.pop();
+                if (st.isEmpty()) {
+                    nsLeft[i] = -1;
+                    break;
+                }
+            }
+            if (!st.isEmpty())
+                nsLeft[i] = st.peek();
+            st.push(i);
+        }
+        // for(int i=0;i<n;i++){
+        //     System.out.print(nsLeft[i]+" ");
+        // }
+        st.clear();
+        nsRight[n - 1] = n;
+        st.push(n - 1);
+
+        for (int i = n - 2; i >= 0; i--) {
+            while (!st.isEmpty() && arr[st.peek()] > arr[i]) {
+                st.pop();
+                if (st.isEmpty()) {
+                    nsRight[i] = n;
+                    break;
+                }
+            }
+            if (!st.isEmpty())
+                nsRight[i] = st.peek();
+            st.push(i);
+        }
+        //  for(int i=0;i<n;i++){
+        //     System.out.print(nsRight[i]+" ");
+        // }
+        //Contribution of each element
+        long sum = 0;
+        int MOD = 1_000_000_007;
+
+        for (int i = 0; i < n; i++) {
+            int leftCount = i - nsLeft[i]; // number of elements to the left (inclusive)
+            int rightCount = nsRight[i] - i; // number of elements to the right (inclusive)
+            long contrib = ((long) arr[i] * leftCount * rightCount) % MOD;
+            sum = (sum + contrib) % MOD;
+        }
+
+        return (int) sum;
+    }
+}
+/*
+To handle duplicates -> Important edge case remember this
+arr = [3, 1, 2, 1]
+
+Let’s focus on the last 1 at index 3.
+
+If we incorrectly use > for both:
+It won't pop the first 1 (index 1), and may treat both 1s as separate minima for overlapping subarrays.
+
+This causes the subarray [1, 2, 1] to be counted twice — once for each 1.
+
+Using:
+
+> on left → avoids skipping previous 1
+
+>= on right → ensures we pop earlier 1 when scanning from right, so rightmost 1 is considered as the contributor
+
+✅ Summary
+Direction	Comparator	Why Use It
+Left	>	Preserve earlier duplicates as separate minima
+Right	>=	Treat right duplicates as part of same block, only count rightmost
+*/
