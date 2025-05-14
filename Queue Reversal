@@ -1,0 +1,26 @@
+class Solution {
+    // Function to reverse the queue.
+    public Queue<Integer> reverseQueue(Queue<Integer> queue) {
+        Stack<Integer> st = new Stack<>();
+        Queue<Integer> que = new LinkedList<>();
+        
+        while (!queue.isEmpty()){
+            
+            int remove = queue.remove();
+            // System.out.print(remove+" ");
+            st.push(remove);
+        }
+        // System.out.println();
+       while(!st.isEmpty()){
+           que.add(st.pop());
+       }
+       return que;
+    }
+}
+/*
+queue.size() is dynamic and changes as you remove elements from the queue.
+
+So during iteration, after a few .remove() calls, queue.size() decreases, and you won’t end up processing all elements if the queue has more than one element.
+
+
+*/
