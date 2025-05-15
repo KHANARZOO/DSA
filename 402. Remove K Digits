@@ -1,0 +1,48 @@
+class Solution {
+    public String removeKdigits(String num, int k) {
+        //Using Stack and concept of placevalue
+        //Shuffling is not allowed
+        StringBuilder sb = new StringBuilder();
+        Stack<Character> st = new Stack<>();
+        int n = num.length();
+        if(k>=n) return new String("0");
+        st.push(num.charAt(0));
+        for (int i = 1; i < n; i++) {
+            while (!st.isEmpty() && k>0 && st.peek() > num.charAt(i)) {
+                st.pop();
+                k--;
+            }
+            st.push(num.charAt(i));
+        }
+        // If we still have k digits left to remove, remove from end -> edge case
+        while (k > 0 && !st.isEmpty()) {
+            st.pop();
+            k--;
+        }
+        while (!st.isEmpty()) {
+            sb.append(st.pop());
+        }
+        sb.reverse();
+        //
+        while (sb.length() > 0 && sb.charAt(0) == '0') {
+            sb.deleteCharAt(0);
+        }
+        //After removing leading zeros, check if the string is empty. If so, return "0"
+        if(sb.length()==0) 
+            sb.append("0");
+        return sb.toString();
+    }
+}
+/*
+3127 -> if we want to make a smaller number out of given number is 1237 if we are to reshuffle 
+     -> so the main point to take is we are always trying to arrange in a increasing order to make the number small
+     -> means that msb(most significant bit) place(leftmost) -> we are trying to place lesser value as much as possible
+
+     edge case — it's one of the most important in the "Remove K Digits" problem -> mine above code to remove leading zero will fail here
+     Input
+        num = "10"
+        k = 2
+        Output ""
+        Expected "0"
+        -> After removing leading zeros, check if the string is empty. If so, return "0"
+*/
