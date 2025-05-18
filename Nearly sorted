@@ -1,0 +1,18 @@
+class Solution {
+    public void nearlySorted(int[] arr, int k) {
+        //MinHeap
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int n = arr.length;
+        int j =0;
+        for(int i=0;i<n;i++){
+            pq.add(arr[i]);
+            if(pq.size()>k){
+                int rem = pq.remove();
+                arr[j++] = rem; 
+            }
+        }
+        while(!pq.isEmpty()){
+            arr[j++] = pq.remove();
+        }
+    }
+}
