@@ -1,0 +1,65 @@
+class Solution {
+    class Pair{
+        int x;
+        int y;
+
+        Pair(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+    class Pair1{
+        int val;
+        Pair p;
+
+        Pair1(int val, Pair p){
+            this.val = val;
+            this.p = p;
+        }
+    }
+    class SortByVal implements Comparator<Pair1>{
+
+        public int compare(Pair1 a, Pair1 b){
+            //max-heap-> decreasing order
+            return b.val - a.val;
+        }
+    }
+    public int[][] kClosest(int[][] points, int k) {
+        PriorityQueue<Pair1> pq = new PriorityQueue<>(new SortByVal());
+        int n = points.length;
+        int a = points[0].length;
+
+        for(int i=0;i<n;i++){
+            int x1 = points[i][0];
+            int y1 = points[i][1];
+
+            int v1 = (x1*x1);
+            int v2 = (y1*y1);
+            int sq = v1+v2;
+            Pair p = new Pair(x1,y1);
+            pq.add(new Pair1(sq, p));
+
+            if(pq.size()>k){
+                pq.remove();
+            }
+        }
+        int[][] ans = new int[k][2];
+        int i1 = 0;
+        while(!pq.isEmpty()){
+            Pair rem = pq.remove().p;
+            int ni = rem.x;
+            int nj = rem.y;
+            int[] temp = new int[2];
+            temp[0]= ni;
+            temp[1]= nj; 
+            ans[i1++] = temp;
+        }
+        return ans;
+    }
+}
+/*
+[(18,(3,3))]
+distance between two points on the X-Y plane is the Euclidean distance (i.e., √(x1 - x2)2 + (y1 - y2)2).
+
+-> x2 and y2 are 0,0 so formula becomes √(x1)^2 + (y2)^2)
+*/
