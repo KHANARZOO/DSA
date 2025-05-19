@@ -1,0 +1,84 @@
+class Solution {
+    class Pair{
+        int val;
+        int freq;
+
+        Pair(int val, int freq){
+            this.val = val;
+            this.freq = freq;
+        }
+    }
+    class SortByFreq implements Comparator<Pair>{
+
+        public int compare(Pair a, Pair b){
+            //To sort in decreasing order
+            return b.freq-a.freq;
+        }
+    }
+    public int[] topKFrequent(int[] nums, int k) {
+        //Brute Force
+        int n = nums.length;
+        int[] res = new int[k];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<n;i++){
+            if(map.containsKey(nums[i])){
+                map.put(nums[i], map.get(nums[i])+1);
+            }else{
+                map.put(nums[i], 1);
+            }
+        }
+        ArrayList<Pair> li = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> entry: map.entrySet()){
+            li.add(new Pair(entry.getKey(), entry.getValue()));
+        }
+        //custom sort -> arraylist in decreasing order
+        Collections.sort(li, new SortByFreq());
+        for(int i=0;i<k;i++){
+            res[i] = li.get(i).val;
+        }
+        return res;
+    }
+}
+==============================================================================================================================================================================
+class Solution {
+    class Pair{
+        int val;
+        int freq;
+
+        Pair(int val, int freq){
+            this.val = val;
+            this.freq = freq;
+        }
+    }
+    class SortByFreq implements Comparator<Pair>{
+
+        public int compare(Pair a, Pair b){
+            return a.freq-b.freq;
+        }
+    }
+    public int[] topKFrequent(int[] nums, int k) {
+        int n = nums.length;
+        PriorityQueue<Pair> pq = new PriorityQueue<>(new SortByFreq());
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int i=0;i<n;i++){
+            if(map.containsKey(nums[i])){
+                map.put(nums[i], map.get(nums[i])+1);
+            }else{
+                map.put(nums[i], 1);
+            }
+        }
+        for(Map.Entry<Integer,Integer> entry: map.entrySet()){
+            pq.add(new Pair(entry.getKey(),entry.getValue()));
+            if(pq.size()>k){
+                pq.remove();
+            }
+        }
+        int[] res = new int[k];
+        int j=0;
+        while(!pq.isEmpty()){
+            res[j++] = pq.remove().val;
+        }
+        return res;
+    }
+}
