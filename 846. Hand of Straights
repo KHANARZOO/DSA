@@ -1,0 +1,42 @@
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        int n = hand.length;
+
+        // If the total number of cards can't be evenly divided into groupSize, return false
+        if (n % groupSize != 0)
+            return false;
+
+        // TreeMap to store card frequencies in sorted order (automatically sorts keys)
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+
+        // Count the frequency of each card in the hand
+        for (int card : hand) {
+            map.put(card, map.getOrDefault(card, 0) + 1);
+        }
+
+        // Try to form groups of consecutive cards
+        while (!map.isEmpty()) {
+            int first = map.firstKey(); // Get the smallest available card
+
+            // Try to create a group starting from 'first' of size 'groupSize'
+            for (int i = 0; i < groupSize; i++) {
+                int current = first + i;
+
+                // If the current required card is not present, we can't form a valid group
+                if (!map.containsKey(current))
+                    return false;
+
+                // Decrease the frequency of the current card by 1
+                map.put(current, map.get(current) - 1);
+
+                // If frequency becomes 0, remove the card from the map
+                if (map.get(current) == 0) {
+                    map.remove(current);
+                }
+            }
+        }
+
+        // If all cards are grouped successfully, return true
+        return true;
+    }
+}
