@@ -1,0 +1,14 @@
+class Solution {
+    int ans = 0;
+    public int towerOfHanoi(int n, int from, int to, int aux) {
+        //Recurrsion
+        
+        if(n<=0) return 0;
+        int val1 =towerOfHanoi(n-1, from, aux, to);
+        // int val3 = 1;//from to to directly
+        int val2 =towerOfHanoi(n-1, aux, to, from);
+        
+        return val1+val2+1;
+        
+    }
+}
