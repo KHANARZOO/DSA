@@ -28,3 +28,37 @@ class Solution {
         return result ;
     }
 }
+=========================================================================================================================================================
+// User function Template for Java
+
+class Solution {
+    public ArrayList<String> graycode(int n) {
+        ArrayList<String> res = new ArrayList<>();
+        
+        //sanity
+        if(n<=0){
+            return new ArrayList<>();
+        }
+        
+        //base case
+        if(n==1){
+            res.add("0");
+            res.add("1");
+            return res;
+        }
+        
+        //first half -> add 0 at prefix
+        ArrayList<String> temp = graycode(n-1);
+        
+        for(int i=0;i<temp.size();i++){
+            res.add("0"+temp.get(i));
+        }
+        
+        //second half -> add 1 at prefix
+        
+        for(int i=temp.size()-1; i>=0 ;i--){
+            res.add("1"+temp.get(i));
+        }
+        return res;
+    }
+}
