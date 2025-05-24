@@ -1,0 +1,24 @@
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if(root==null) return new ArrayList<>();
+        res = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        queue.add(root);
+
+        while(!queue.isEmpty()){
+            int si = queue.size();
+            temp = new ArrayList<>();
+            for(int i=0;i<si;i++){
+                TreeNode remove = queue.remove();
+                temp.add(remove.val);
+                if(remove.left!=null) queue.add(remove.left);
+                if(remove.right!=null) queue.add(remove.right);
+            }
+            res.add(temp);
+        }
+        return res;
+    }
+}
