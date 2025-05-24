@@ -1,0 +1,36 @@
+class Solution {
+    boolean ans;
+
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null)
+            return false;
+        if (root.left != null && root.right != null)
+            //if both are not null then only call mirror method
+            ans = mirror(root.left, root.right);
+        else if(root.left == null && root.right == null)
+            //if only root is present no children return true
+            return true;
+        else if (root.left != null || root.right != null)
+            //if only any one of them is present return false
+            return false;
+        return ans;
+    }
+
+    public boolean mirror(TreeNode rootLeft, TreeNode rootRight) {
+        if (rootLeft == null && rootRight == null)
+            return true;
+        if (rootLeft == null || rootRight == null)
+            return false;
+        if (rootLeft.val != rootRight.val)
+            return false;
+
+        boolean sb1 = mirror(rootLeft.left, rootRight.right);
+        if (sb1 == false)
+            return false;
+        boolean sb2 = mirror(rootLeft.right, rootRight.left);
+        if (sb2 == false)
+            return false;
+
+        return true;
+    }
+}
