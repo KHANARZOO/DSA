@@ -1,0 +1,20 @@
+class Tree {
+    int findCeil(Node root, int key) {
+      if(root==null) return -1;
+      //ceil -> Smallest number greater then x
+      int ans = -1;
+      while(root!=null){
+          if(root.data==key) return root.data;
+          else if(root.data<key){
+              //left side can never be the answer go to right side
+              root = root.right;
+          }else{
+              //root.data>x
+              //root.data can be the answer but will look left for better answer
+              ans = root.data;
+              root = root.left;
+          }
+      }
+      return ans;
+    }
+}
