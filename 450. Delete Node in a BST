@@ -1,0 +1,46 @@
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null)
+            return null;
+        if (root.val == key) {
+            // Case 1: If the node to be deleted is a leaf node (no children)
+            if (root.left == null && root.right == null)
+                return null;
+            // Case 2: If the node has only one child, return that child
+            if (root.left == null)
+                return root.right;
+            if (root.right == null)
+                return root.left;
+
+            // Case 3: If the node has two children
+            // -> In a Binary Search Tree, we can't just remove a node with two children.
+            // -> Instead, we find a suitable value to replace the node's value with.
+            // -> We typically use either:
+            //    a) The maximum value in the left subtree (inorder predecessor), OR
+            //    b) The minimum value in the right subtree (inorder successor).
+            // -> Here, we're choosing the minimum value in the right subtree (inorder successor)
+            //    to maintain BST properties.
+            if (root.left != null && root.right != null) {
+                int minOfRightSubtree = findMin(root.right);
+                root.val = minOfRightSubtree;
+                //now delete and attach it to right subtree
+                root.right = deleteNode(root.right, minOfRightSubtree);
+            }
+        } else if (root.val < key) {
+            root.right = deleteNode(root.right, key);
+        } else {
+            root.left = deleteNode(root.left, key);
+        }
+        return root;
+    }
+      // Helper method to find the minimum value in a subtree
+    // This is used to find the minimum of RightSubtree
+    public int findMin(TreeNode node) {
+        if (node == null)
+            return Integer.MIN_VALUE;
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node.val;
+    }
+}
