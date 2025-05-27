@@ -1,0 +1,47 @@
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        long left = Long.MIN_VALUE;
+        long right = Long.MAX_VALUE;
+
+        return isBST(root, left, right);
+    }
+
+    public boolean isBST(TreeNode root, long left, long right) {
+        if (root == null)
+            return true;
+
+        if ((root.val > left && root.val < right)
+                && isBST(root.left, left, root.val)
+                && isBST(root.right, root.val, right))
+            return true;
+        else
+            return false;
+    }
+}
+/*
+This is the smallest possible integer value (Integer.MIN_VALUE = -2147483648), so root.val - 1 becomes -2147483649, which is out of range for an int,
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        long left = Long.MIN_VALUE;
+        long right = Long.MAX_VALUE;
+
+        return isBST(root, left, right);
+    }
+
+    public boolean isBST(TreeNode root, long left, long right) {
+        if (root == null)
+            return true;
+        if ((root.val >= left && root.val <= right)
+                && (isBST(root.left, left, root.val - 1))
+                && (isBST(root.right, root.val + 1, right)))
+            return true;
+        else
+            return false;
+    }
+} root =
+[-2147483648,-2147483648]
+Output
+true
+Expected
+false
+*/
