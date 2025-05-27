@@ -1,0 +1,22 @@
+class Solution {
+    public static int floor(Node root, int x) {
+        //floor -> greatest element less than x
+        if(root==null) return -1;
+        int ans = -1;
+        while(root!=null){
+        if(root.data==x) return root.data;
+        else if(root.data<x){
+            //it can be the answer
+            ans = root.data;
+            //look for better answer on right 
+            root = root.right;
+        }else{
+            //if root.data > x
+            //right side can never be the answer
+            //go to left
+            root = root.left;
+            }
+        }
+        return ans;
+    }
+}
