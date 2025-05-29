@@ -1,0 +1,60 @@
+class Solution {
+    ArrayList<Integer> inorder;
+    class Pair{
+        int first;
+        int sec;
+
+        Pair(int first, int sec){
+            this.first = first;
+            this.sec = sec;
+        }
+    }
+    public void recoverTree(TreeNode root) {
+        //Inorder
+        inorder = new ArrayList<>();
+        in(root);
+        int n = inorder.size();
+        ArrayList<Pair> inversionPair = new ArrayList<>();
+        for(int i=0;i<n-1;i++){
+            if(inorder.get(i) > inorder.get(i+1)){
+                inversionPair.add(new Pair(inorder.get(i), inorder.get(i+1)));
+            }
+        }
+        int x =-1;
+        int y=-1;
+        if(inversionPair.size()==1){
+            //swap the pair ele
+            Pair p= inversionPair.get(0);
+            x = p.first;
+            y=  p.sec;
+        }
+        if(inversionPair.size()==2){
+            Pair p1 = inversionPair.get(0);
+            Pair p2 = inversionPair.get(1);
+            x  = Math.max(p1.first, p1.sec);
+            y = Math.min(p2.first, p2.sec);
+        }
+        swapNodes(root, x, y);
+
+    }
+    public TreeNode in(TreeNode root){
+        if(root==null) return null;
+
+        if(root.left!=null) in(root.left);
+        inorder.add(root.val);
+        if(root.right!=null) in(root.right);
+
+        return null;
+    }
+     // Swap the values of the two nodes in the actual tree
+    public void swapNodes(TreeNode root, int x, int y) {
+        if (root == null) return;
+
+        if (root.val == x || root.val == y) {
+            root.val = (root.val == x) ? y : x;
+        }
+
+        swapNodes(root.left, x, y);
+        swapNodes(root.right, x, y);
+    }
+}
