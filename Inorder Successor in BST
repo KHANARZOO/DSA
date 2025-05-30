@@ -1,0 +1,57 @@
+//BRUTE FORCE
+class Solution {
+    ArrayList<Integer> inorder;
+    public int inorderSuccessor(Node root, Node x) {
+        inorder = new ArrayList<>();
+        in(root);
+        int n = inorder.size();
+        for(int i=0;i<n-1;i++){
+            if(inorder.get(i)==x.data){
+                return inorder.get(i+1);
+            }
+        }
+        return -1;
+    }
+    public Node in(Node root){
+        if(root==null) return null;
+        
+        in(root.left);
+        inorder.add(root.data);
+        in(root.right);
+        
+        return null;
+    }
+}
+=============================================================================================================================================================
+class Solution {
+    // returns the inorder successor of the Node x in BST (rooted at 'root')
+    public int inorderSuccessor(Node root, Node x) {
+       if(root==null || x==null) return -1;
+       
+       if(x.right!=null) return findSuccessorInRight(x);
+       return populatePA(root, x);
+    }
+    public int findSuccessorInRight(Node x){
+        Node rst = x.right;
+        while(rst.left!=null){
+            rst = rst.left;
+        }
+        return rst.data;
+    }
+    public int populatePA(Node root, Node x){
+        int PA = -1;
+        Node temp = root;
+        
+        while(temp!=x){
+            
+            if(temp.data>x.data){
+                PA = temp.data;
+                temp = temp.left;
+            }
+            else if(temp.data<x.data){
+                temp = temp.right;
+            }else break;
+        }
+        return PA;
+    }
+}
