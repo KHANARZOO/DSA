@@ -1,0 +1,18 @@
+class Solution {
+    int ans;
+    int getLevelDiff(Node root) {
+       boolean isAns = true;
+       diff(root, isAns);
+       return ans;
+    }
+    void diff(Node root, boolean isAns){
+        if(root==null) return;
+        //false -> odd level -> subtract it to ans
+        if(isAns==false) ans = ans-root.data; 
+        //true -> even level -> add it to ans
+        if(isAns==true) ans = ans+root.data;
+        
+        diff(root.left, !isAns);
+        diff(root.right, !isAns);
+    }
+}
