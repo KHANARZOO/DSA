@@ -1,0 +1,37 @@
+class Solution {
+    // Function to return a list containing the inorder traversal of the tree.
+    ArrayList<Integer> inOrder(Node root) {
+        // Morris Traversal
+        ArrayList<Integer> li = new ArrayList<>();
+        Node curr = root;
+        while(curr!=null){
+            if(curr.left==null){
+                //print youself and move to curr to curr.right assuming already backedge to previous node was created while coming down
+                li.add(curr.data);
+                curr = curr.right;
+            }
+            else{
+                //curr.left != null
+                Node leftSubTree = curr.left;
+                Node temp = leftSubTree;
+                while(temp.right!= null && temp.right!=curr){
+                    temp = temp.right;
+                }
+                if(temp.right==null){
+                    //create backedge and it's first time
+                    temp.right = curr;
+                    curr = curr.left;
+                }else if(temp.right==curr){
+                    //loop found and it's second time
+                    //break the backedge
+                    temp.right = null;
+                    //Now left is done
+                    li.add(curr.data);
+                    //move right
+                    curr = curr.right;
+                }
+            }
+        }
+        return li;
+    }
+}
