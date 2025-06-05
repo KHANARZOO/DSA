@@ -1,0 +1,48 @@
+class Tree {
+    // Function to serialize a tree and return a list containing nodes of tree.
+    public ArrayList<Integer> serialize(Node root) {
+        //Level Order Traversal and store it in ArrayList
+        ArrayList<Integer> li = new ArrayList<>();
+        if(root==null) return li;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            Node remove = queue.remove();
+            if(remove==null) {
+                li.add(-1);
+                continue;
+            }
+            //Always add both .left and .right to the queue—even if they are null—to preserve tree structure
+            li.add(remove.data);
+            queue.add(remove.left);
+            queue.add(remove.right);
+        }
+        return li;
+    }
+
+    // Function to deserialize a list and construct the tree.
+    public Node deSerialize(ArrayList<Integer> arr) {
+        int n = arr.size();
+        if(n==0 || arr.get(0)==-1) return null;
+        Node root = new Node(arr.get(0));
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while(!queue.isEmpty() && i<n){
+            Node remove =  queue.poll();
+            int leftVal = arr.get(i++);
+            if(leftVal!=-1){
+                remove.left = new Node(leftVal);
+                queue.add(remove.left);
+            }
+            if(i<n){
+                int rightVal = arr.get(i++);
+                if(rightVal!=-1){
+                remove.right = new Node(rightVal);
+                queue.add(remove.right);
+            }
+            }
+        }
+        return root;
+    }
+};
