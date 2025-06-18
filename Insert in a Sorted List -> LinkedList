@@ -1,0 +1,18 @@
+class Solution {
+    Node sortedInsert(Node head, int key) {
+        if(head==null) return new Node(key);
+        Node temp = head;
+        Node nn = new Node(key);
+        if(temp.data>key) //need to insert at first position
+        {
+            nn.next = temp;
+            return nn;
+        }
+            while(temp.next != null && temp.next.data<=key){
+                temp = temp.next;
+            }
+            nn.next = temp.next;
+            temp.next = nn;
+        return head;
+    }
+}
